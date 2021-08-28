@@ -40,9 +40,11 @@ RunningAvg::RunningAvg(size_t size) : size(size) {
 
 double ExpSmooth::filter(double new_val) {
     if (std::isnan(last_val)) {
-        return new_val;
+        last_val = new_val;
     }
-    return new_val * coef + (1 - coef) * last_val;
+    auto res = new_val * coef + (1 - coef) * last_val;
+    last_val = res;
+    return res;
 }
 
 ExpSmooth::ExpSmooth(double coef) : coef(coef) {}
