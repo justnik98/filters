@@ -50,4 +50,5 @@ namespace filter {
     }
 
     ExpSmooth::ExpSmooth(double coef) : coef(coef) {}
+
 }

@@ -8,6 +8,7 @@
 #include <vector>
 
 namespace filter {
+
     class IFilter {
     public:
         virtual double filter(double new_val) = 0;
@@ -15,7 +16,7 @@ namespace filter {
 
     class MedianFilter : public IFilter {
     public:
-        MedianFilter(size_t size);
+        explicit MedianFilter(size_t size);
 
         double filter(double new_val) final;
 
@@ -47,5 +48,6 @@ namespace filter {
         double coef = 1;
         double last_val = std::numeric_limits<double>::quiet_NaN();
     };
+
 }
 #endif //FILTERS_FILTERS_HPP
