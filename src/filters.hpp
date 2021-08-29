@@ -7,44 +7,59 @@
 
 #include <vector>
 
-class IFilter {
-public:
-    virtual double filter(double new_val) = 0;
-};
+namespace filter {
 
-class MedianFilter : public IFilter {
-public:
-    MedianFilter(size_t size);
+    class IFilter {
+    public:
+        virtual double filter(double new_val) = 0;
+    };
 
-    double filter(double new_val) final;
+    class MedianFilter : public IFilter {
+    public:
+        explicit MedianFilter(size_t size);
 
-private:
-    std::vector<double> data;
-    std::size_t size;
-    std::size_t ind = 0;
-};
+        double filter(double new_val) final;
 
-class RunningAvg : public IFilter {
-public:
-    explicit RunningAvg(size_t size);
+    private:
+        std::vector<double> data;
+        std::size_t size;
+        std::size_t ind = 0;
+    };
 
-    double filter(double new_val) final;
+    class RunningAvg : public IFilter {
+    public:
+        explicit RunningAvg(size_t size);
 
-private:
-    std::vector<double> data;
-    std::size_t size;
-    std::size_t ind = 0;
-};
+        double filter(double new_val) final;
 
-class ExpSmooth : public IFilter {
-public:
-    explicit ExpSmooth(double coef);
+    private:
+        std::vector<double> data;
+        std::size_t size;
+        std::size_t ind = 0;
+    };
 
-    double filter(double new_val) final;
+    class ExpSmooth : public IFilter {
+    public:
+        explicit ExpSmooth(double coef);
 
-private:
-    double coef = 1;
-    double last_val = std::numeric_limits<double>::quiet_NaN();
-};
+        double filter(double new_val) final;
 
+    private:
+        double coef = 1;
+        double last_val = std::numeric_limits<double>::quiet_NaN();
+    };
+
+    class ABFilter : public IFilter {
+    public:
+        ABFilter(double dt, double sigma_process, double sigma_noise);
+
+        double filter(double new_val) final;
+
+    private:
+        double dt;
+        double sigma_process;
+        double sigma_noise;
+    };
+
+}
 #endif //FILTERS_FILTERS_HPP
