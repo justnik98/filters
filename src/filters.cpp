@@ -51,4 +51,27 @@ namespace filter {
 
     ExpSmooth::ExpSmooth(double coef) : coef(coef) {}
 
+    ABFilter::ABFilter(double dt, double sigmaProcess, double sigmaNoise) : dt(dt), sigma_process(sigmaProcess),
+                                                                            sigma_noise(sigmaNoise) {}
+
+    double ABFilter::filter(double new_val) {
+        static double xk1, vk1, a, b;
+        static double xk, vk, rk;
+        static double xm;
+
+        double lambda = sigma_process * dt * dt / sigma_noise;
+        double r = (4 + lambda - sqrt(8 * lambda + lambda * lambda)) / 4;
+        a = 1.0 - r * r;
+        b = 2.0 * (2.0 - a) - 4.0 * sqrt(1.0 - a);
+
+        xm = new_val;
+        xk = xk1 + vk1 * dt;
+        vk = vk1;
+        rk = xm - xk;
+        xk += a * rk;
+        vk += b * rk / dt;
+        xk1 = xk;
+        vk1 = vk;
+        return xk1;
+    }
 }

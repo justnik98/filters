@@ -49,5 +49,17 @@ namespace filter {
         double last_val = std::numeric_limits<double>::quiet_NaN();
     };
 
+    class ABFilter : public IFilter {
+    public:
+        ABFilter(double dt, double sigmaProcess, double sigmaNoise);
+
+        double filter(double new_val) final;
+
+    private:
+        double dt;
+        double sigma_process;
+        double sigma_noise;
+    };
+
 }
 #endif //FILTERS_FILTERS_HPP
