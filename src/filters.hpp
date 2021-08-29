@@ -51,7 +51,7 @@ namespace filter {
 
     class ABFilter : public IFilter {
     public:
-        ABFilter(double dt, double sigmaProcess, double sigmaNoise);
+        ABFilter(double dt, double sigma_process, double sigma_noise);
 
         double filter(double new_val) final;
 
