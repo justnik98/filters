@@ -61,5 +61,17 @@ namespace filter {
         double sigma_noise;
     };
 
+    class KalmanFilter : public IFilter {
+    public:
+        KalmanFilter(double dt, double errMeasure);
+// ABFilter(double dt, double sigma_process, double sigma_noise);
+
+        double filter(double new_val) final;
+
+    private:
+        double dt;
+        double err_measure;
+    };
+
 }
 #endif //FILTERS_FILTERS_HPP

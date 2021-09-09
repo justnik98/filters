@@ -74,4 +74,18 @@ namespace filter {
         vk1 = vk;
         return xk1;
     }
+
+    KalmanFilter::KalmanFilter(double dt, double errMeasure) : dt(dt), err_measure(errMeasure) {}
+
+    double KalmanFilter::filter(double new_val) {
+        static double err_estimate = err_measure;
+        static double last_estimate;
+        double kalman_gain, current_estimate;
+
+        kalman_gain = err_estimate / (err_estimate + err_measure);
+        current_estimate = last_estimate + kalman_gain * (new_val - last_estimate);
+        err_estimate = (1.0 - kalman_gain) * err_estimate + fabs(last_estimate - current_estimate);
+        last_estimate = current_estimate;
+        return current_estimate;
+    }
 }
